@@ -1,0 +1,56 @@
+<div class="container">
+	<h3>To Do:</h3>
+	<div class="taskList">
+		<div ng-class="mydata.status === true ? 'doneTaskContainer' : 'toDoTaskContainer'"
+			 ng-repeat="mydata in data | orderBy: 'deadline' | filter: { status: false }">
+			<input type="checkbox" style="float: left; height: 23px;" value="{{mydata.status}}" ng-change='isDone({{mydata.id}}, mydata)' ng-model="mydata.status">
+			<div style="float: left; margin-left: 5px; width: 365px; line-height: 30px"><strong>{{mydata.task}}</strong></div>	
+		    <input type="image" src="images/delete.png" height="30px" width="30px" style="float: right; margin-left: 10px;" alt="Delete" 
+		    	   ng-click="removeTask({{mydata.id}}, mydata)">
+		    <input type="image" src="images/edit.png" height="30px" width="30px" style="float: right;" alt="Edit"
+		    	   data-toggle="modal" data-target="#{{mydata.id}}">
+		    <!-- Button trigger modal -->
+
+			<div style="float: right; line-height: 30px; margin-right: 10px;">{{mydata.deadline | date: 'MMM d, y, h:mm a'}}</div>
+			<div style="clear: both"></div>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="{{mydata.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="myModalLabel">Edit task</h4>
+			      </div>
+			      <div class="modal-body">
+			        <input class="input-sm" ng-model="mydata.task" type="text" />
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-primary" ng-click="edit({{mydata.id}}, mydata)" data-dismiss="modal">Save changes</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="addTaskForm">
+		
+		<form name="addTask" ng-controller="FormController as formCtrl" ng-submit="formCtrl.addTask()">
+		
+			<div class="emptyTaskContainer">
+				<input type="checkbox" class="doneCheckBox" name="done" value="yes">
+				<div style="float: left; margin-left: 5px; width: 365px;"><strong>{{formCtrl.newTask.task}}</strong></div>
+				<div style="float: right;">{{formCtrl.newTask.deadline | date: 'MMM d, y, h:mm a'}}</div>
+				<div style="clear: both"></div>
+			</div>
+			
+			<input id="taskDescription" class="input-sm" ng-model="formCtrl.newTask.task" type="text" />
+			<input id="taskDateDeadline" class="input-sm" ng-model="formCtrl.newTask.deadline" type="date" />
+			<input id="taskTimeDeadline" class="input-sm" ng-model="formCtrl.newTask.deadline" type="time" />
+			<button type="submit" class="btn btn-primary" id="taskSubmit">Add task</button>
+		</form>
+	</div><br/>
+</div>
